@@ -43,6 +43,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "rspec"
   gem "shoulda-matchers", "~> 5.0"
+  gem 'rswag'
 end
 
 group :development do

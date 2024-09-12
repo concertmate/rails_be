@@ -3,6 +3,6 @@ class Artist
 
   def initialize(data)
     @name = data[:name]
-    @musicbrainz_id = data[:musicbrainz_id]
+    @musicbrainz_id = data[:id]
   end
 end

@@ -13,6 +13,12 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+
+  def destroy 
+    event = Event.find(params[:id])
+    event.destroy
+  end
+
   def index
     begin
       if params[:user_id]

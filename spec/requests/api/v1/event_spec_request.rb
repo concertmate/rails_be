@@ -61,4 +61,51 @@ RSpec.describe "Event" do
 
     end
   end
+
+  describe '#delete' do
+    it 'deletes an event' do
+      event_params = Event.create(
+                      event_name: "Bluegrass Week",
+                      venue_name: "San Antonio Fair",
+                      date_time: "2024-12-31T20:00:00Z",
+                      artist: "Marty Robbins",
+                      location: "San Antonio, TX")
+
+      delete "/api/v1/events/#{event_params.id}"
+      # require 'pry'; binding.pry
+      expect(response).to be_successful
+      expect(response.status).to eq(204)
+
+    end
+  end
+
+  describe '#index' do
+    it 'gets all the events' do
+      event1 = Event.create(
+                      event_name: "Bluegrass Week",
+                      venue_name: "San Antonio Fair",
+                      date_time: "2024-12-31T20:00:00Z",
+                      artist: "Marty Robbins",
+                      location: "San Antonio, TX")
+
+      event2 = Event.create(
+                      event_name: "Blue ",
+                      venue_name: "San Antonio ",
+                      date_time: "2024-20-31T20:00:00Z",
+                      artist: "Mart",
+                      location: "Dallas, TX")
+                               
+      user1 = User.create(name: 'John Doe', email: 'john@email.com')
+    
+      user1.events << [event1, event2]
+      require 'pry'; binding.pry
+      get '/api/v1/events', params: {user: user1}
+
+      expect(response.status).to eq(200)
+      require 'pry'; binding.pry
+      expect(response).to be_successful
+
+
+    end
+  end
 end

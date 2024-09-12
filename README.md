@@ -1,24 +1,79 @@
-# README
+# Concertmate Backend App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
+### This is a backend application built with Ruby on Rails. It serves as the backend for managing users, events, and artist data. The application provides RESTful APIs for creating, reading, updating, and deleting (CRUD) resources like users, artists, and events.
 
-Things you may want to cover:
+## Features Provided
+	•	Manage users and their saved artists.
+	•	Create and manage events.
+	•	Associate users with events and allow users to attend events.
+	•	RESTful API endpoints for handling various resources.
 
-* Ruby version
+## Setup Guide
+1. Clone the Repository
+2. Install App Dependencies (bundle install)
+3. Set up Database (rails db:drop, rails db:create, rails db:migrate, rails db:seed)
+4. Run the server locally (rails s)
 
-* System dependencies
+## Endpoints
+### Users
+	•	GET /api/v1/users - Get a list of all users
+	•	GET /api/v1/users/:id - Get a specific user
+	•	POST /api/v1/users - Create a new user
+	•	PATCH/PUT /api/v1/users/:id - Update a user
+	•	DELETE /api/v1/users/:id - Delete a user
+ 
+ ### Artists
+	•	GET /api/v1/artists - Get a list of artists (with optional search parameters)
+	•	POST /api/v1/artists - Add an artist to a user’s saved artists
+	•	DELETE /api/v1/artists/:id - Remove an artist from a user’s saved artists
 
-* Configuration
+ ### Events 
+ 	•	POST /api/v1/user_events - Join an event as a user
+	•	DELETE /api/v1/user_events/:id - Remove a user from an event
 
-* Database creation
+ ### Example Requests
+ 1. Create a user
+    POST http://localhost:3000/api/v1/users 
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+}
 
-* Database initialization
+2. Add an Artist to a Users saved artist
+   POST http://localhost:3000/api/v1/artists
+   {
+    "artist": {
+      "name": "The Beatles",
+      "musicbrainz_id": "some-unique-id"
+    },
+    "user_id": 1
+  }
 
-* How to run the test suite
+3. Creating an Event
+   POST http://localhost:3000/api/v1/events 
+   {
+  "event_name": "Concert Event",
+  "venue_name": "Stadium",
+  "date_time": "2024-12-01T18:00:00",
+  "location": "New York"
+}
 
-* Services (job queues, cache servers, search engines, etc.)
+4. Deleting an Event
+   DELETE http://localhost:3000/api/v1/events/1
 
-* Deployment instructions
+## Database Schema
+![Screenshot 2024-09-12 at 6 18 59 AM](https://github.com/user-attachments/assets/e0d0d582-de0e-407d-b346-b7342d16c382)
 
-* ...
+## Current Contributors 
+- Rodrigo Chavez
+  - [Github](https://github.com/RodrigoACG)
+  - [Linkedin](https://www.linkedin.com/in/rodrigo%2Dchavez1/)
+
+- Clyde Autin
+  - [Github](https://github.com/clydeautin)
+  - [Linkedin](https://www.linkedin.com/in/clydeautin/)
+
+- Garrett Bowman
+  - [Github](https://github.com/GBowman1)
+  - [Linkedin](https://www.linkedin.com/in/gbowman3/)

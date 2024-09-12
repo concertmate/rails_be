@@ -61,4 +61,21 @@ RSpec.describe "Event" do
 
     end
   end
+
+  describe '#delete' do
+    it 'deletes an event' do
+      event_params = Event.create(
+                      event_name: "Bluegrass Week",
+                      venue_name: "San Antonio Fair",
+                      date_time: "2024-12-31T20:00:00Z",
+                      artist: "Marty Robbins",
+                      location: "San Antonio, TX")
+
+      delete "/api/v1/events/#{event_params.id}"
+      # require 'pry'; binding.pry
+      expect(response).to be_successful
+      expect(response.status).to eq(204)
+
+    end
+  end
 end

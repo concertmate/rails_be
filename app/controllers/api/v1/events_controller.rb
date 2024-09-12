@@ -9,6 +9,11 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def destroy 
+    event = Event.find(params[:id])
+    event.destroy
+  end
+
   private 
 
   def event_params

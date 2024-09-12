@@ -1,5 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'faker'
 require "simplecov"
 SimpleCov.start
 ENV['RAILS_ENV'] ||= 'test'
@@ -80,5 +81,10 @@ RSpec.configure do |config|
 
   require 'webmock/rspec'
   WebMock.disable_net_connect!(allow_localhost: true)
+
+  RSpec.configure do |config|
+    config.include FactoryBot::Syntax::Methods
+  end
+
 end
 

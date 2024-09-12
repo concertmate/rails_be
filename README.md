@@ -46,6 +46,8 @@
  ### Example Requests
     Deployed URL: https://concertmate-rails-9f7aa871924c.herokuapp.com/
 
+  Http Method, Route, Body
+  
  1. Create a user
     POST http://localhost:3000/api/v1/users 
   {

@@ -16,6 +16,7 @@ RSpec.describe TicketMasterService do
       events = TicketMasterService.get_events(artist)
 
       expect(events).to be_a(Hash)
+      require 'pry'; binding.pry
     end
   end
 end

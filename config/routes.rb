@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :events, only: [:show, :create, :update, :destroy]
       resources :users, only: [:show, :create, :update, :destroy]
       resources :user_events, only: [:show, :create, :update, :destroy]
+      resources :artists, only: [:index, :create, :destroy]
     end
   end
 end

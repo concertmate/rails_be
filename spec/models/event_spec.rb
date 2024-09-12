@@ -9,7 +9,7 @@ RSpec.describe Event, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:user_events) }
-    it { should have_many(:users).through(:user_events) }
+    it { should have_many(:attendees) }
+    it { should have_many(:users).through(:attendees) }
   end
 end

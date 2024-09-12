@@ -7,7 +7,9 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:user_events) }
-    it { should have_many(:events).through(:user_events) }
+    it { should have_many(:attendees) }
+    it { should have_many(:events) }
+    it { should have_many(:user_artists) }
+    it { should have_many(:artists).through(:user_artists) }
   end
 end

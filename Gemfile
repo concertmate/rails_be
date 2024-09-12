@@ -38,7 +38,7 @@ gem "bootsnap", require: false
 gem "jsonapi-serializer"
 gem "faraday"
 gem "factory_bot_rails"
-gem 'bundler-audit', require: false
+gem 'bundler-audit'
 gem 'brakeman'
 
 group :development, :test do

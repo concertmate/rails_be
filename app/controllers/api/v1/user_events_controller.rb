@@ -14,6 +14,10 @@ class Api::V1::UserEventsController < ApplicationController
     end
   end
 
+  def index
+
+  end
+
   private
   params.require(:event).permit(:venue_name, :event_name, :date_time, :artist, :location, :user_id)
 end

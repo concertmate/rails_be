@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  has_many :user_events
-  has_many :users, through: :user_events
+  has_many :attendees
+  has_many :users, through: :attendees
 
   validates :venue_name, presence: true
   validates :date_time, presence: true

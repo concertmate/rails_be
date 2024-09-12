@@ -47,6 +47,7 @@ group :development, :test do
   gem "rspec"
   gem "shoulda-matchers", "~> 5.0"
   gem 'rswag'
+
   gem "pry"
   gem 'faker'
   gem 'vcr'

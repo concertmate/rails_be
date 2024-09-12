@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_12_070736) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_12_181519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_12_070736) do
     t.index ["musicbrainz_id"], name: "index_artists_on_musicbrainz_id", unique: true
   end
 
+  create_table "attendees", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_attendees_on_event_id"
+    t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "venue_name"
     t.string "event_name"
@@ -30,6 +39,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_12_070736) do
     t.string "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "user_artists", force: :cascade do |t|
@@ -41,16 +52,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_12_070736) do
     t.index ["user_id"], name: "index_user_artists_on_user_id"
   end
 
-  create_table "user_events", force: :cascade do |t|
-    t.boolean "host"
-    t.bigint "user_id", null: false
-    t.bigint "event_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_user_events_on_event_id"
-    t.index ["user_id"], name: "index_user_events_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -58,8 +59,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_12_070736) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "attendees", "events"
+  add_foreign_key "attendees", "users"
+  add_foreign_key "events", "users"
   add_foreign_key "user_artists", "artists"
   add_foreign_key "user_artists", "users"
-  add_foreign_key "user_events", "events"
-  add_foreign_key "user_events", "users"
 end

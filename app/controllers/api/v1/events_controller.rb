@@ -1,4 +1,8 @@
-class Api::V1::EventsController < ApplicationController 
+class Api::V1::EventsController < ApplicationController
+  # THIS CONTROLLER NOW RENDERS JSON FOR ALL DB EVENTS, WE DO NOT NEED A CREATE AND DESTROY ACTION FOR EVENTS IN THIS CONTROLLER
+  # THAT WILL HAPPEN IN USER_EVENTS CONTROLLER
+  # WE JUST NEED INDEX ACTION TO SHOW ALL EVENTS EVENT.ALL
+  # AND SHOW ACTION TO SHOW A SINGLE EVENT EVENT.FIND(BY ID)
   def create
     event = Event.new(event_params)
 
@@ -9,11 +13,12 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+
   def destroy 
     event = Event.find(params[:id])
     event.destroy
   end
-  
+
   def index
     begin
       if params[:user_id]

@@ -63,7 +63,9 @@
    DELETE http://localhost:3000/api/v1/events/1
 
 ## Database Schema
-![Screenshot 2024-09-12 at 6 18 59 AM](https://github.com/user-attachments/assets/e0d0d582-de0e-407d-b346-b7342d16c382)
+<img width="1056" alt="Screenshot 2024-09-12 at 12 44 29 PM" src="https://github.com/user-attachments/assets/d3bf9539-faa6-4ed8-b847-c3de5f3867cd">
+
+
 
 ## Current Contributors 
 - Rodrigo Chavez

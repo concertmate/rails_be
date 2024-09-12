@@ -1,4 +1,6 @@
-class Api::V1::EventsController < ApplicationController 
+class Api::V1::EventsController < ApplicationController
+  # THIS CONTROLLER NOW RENDERS JSON FOR ALL DB EVENTS, WE DO NOT NEED A CREATE AND DESTROY ACTION FOR EVENTS
+  # THAT WILL HAPPEN IN USER_EVENTS CONTROLLER
   def create
     event = Event.new(event_params)
 

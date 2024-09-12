@@ -3,4 +3,17 @@ class Api::V1::UserEventsController < ApplicationController
   # deleting an event associated with a user
   # showing an event associated with a user
   # showing all events associated with a user
+  def create 
+    user = User.find(params[:user_id])
+    event = user.events.create(event_params)
+
+    if event.save
+      render json: EventSerializer.new(event), status: :created
+    else
+      render json: { errors: event.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+  params.require(:event).permit(:venue_name, :event_name, :date_time, :artist, :location, :user_id)
 end

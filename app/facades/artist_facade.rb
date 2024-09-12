@@ -1,8 +1,8 @@
 class ArtistFacade
-  def self.all_artists
-    artists = ArtistService.get_all_arrtists
-    artists.map do |artist|
-      Artist.new(artist)
+  def self.search_artists(name)
+    artists_data = ArtistService.search_artists_by_name(name)
+    artists_data.map do |artist_data|
+      ArtistPoro.new(artist_data)
     end
   end
 end

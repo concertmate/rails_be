@@ -1,7 +1,12 @@
 class ArtistController < ApplicationController
   def index
-    artists = ArtistFacade.all_artists
-    render json: ArtistSerializer.new(artists)
+    if params[:name]
+      artists = ArtistFacade.search_artists(params[:name])
+      render json: ArtistSerializer.new(artists)
+    else
+      error = ErrorSerializer.new(StandardError.new('Name parameter is required'))
+      render json: error.serialize_json, status: :bad_request
+    end
   end
 
   def create

@@ -27,5 +27,15 @@ RSpec.describe "Api::V1::Artists", type: :request do
         expect(data[:data].count).to eq(10)
       end
     end
+    it "returns an error if no search name is passed" do
+      VCR.turned_off do
+        get "/api/v1/artists"
+
+        expect(response).to have_http_status(:bad_request)
+        data = JSON.parse(response.body, symbolize_names: true)[:errors]
+        expect(data).to be_an(Array)
+        expect(data.first[:detail]).to eq("Name parameter is required")
+      end
+    end
   end
 end

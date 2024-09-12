@@ -9,6 +9,21 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def index
+    begin
+      if params[:user_id]
+        user = User.find(params[:user_id])
+        events = user.events
+        render json: EventSerializer.new(events)
+      else
+        events = Event.all
+        render json: EventSerializer.new(events)
+      end
+    rescue ActiveRecord::RecordNotFound => e
+      render json: ErrorSerializer.new(e).serialize_json, status: :not_found
+    end
+  end
+
   private 
 
   def event_params

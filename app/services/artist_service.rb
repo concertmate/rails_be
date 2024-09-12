@@ -6,7 +6,7 @@ class ArtistService
     end
   end
 
-  def self.get_artist_by_name(name)
+  def self.get_artists_by_name(name)
     response = get_conn.get('/artist', { query: "artist:#{name}", fmt: 'json' })
     JSON.parse(response.body, symbolize_names: true)[:artists]
   end

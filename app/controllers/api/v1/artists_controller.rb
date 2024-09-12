@@ -1,4 +1,4 @@
-class Api::V1::ArtistController < ApplicationController
+class Api::V1::ArtistsController < ApplicationController
   def index
     if params[:name]
       artists = ArtistFacade.search_artists(params[:name])

@@ -10,7 +10,8 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def destroy
-    attendee = Attendee.find_by(user_id: params[:id])
+    attendee = Attendee.find_by(id: params[:id])
+
     if attendee
       attendee.destroy
       render json: { message: 'Attendee removed successfully' }, status: :ok

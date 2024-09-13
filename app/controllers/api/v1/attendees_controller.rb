@@ -1,7 +1,7 @@
 class Api::V1::AttendeesController < ApplicationController
   def create
-    attendee = Attendee.new(attendee_params)
-
+    event = Event.find(attendee_params[:event_id])
+    attendee = event.attendees.new(attendee_params)
     if attendee.save
       render json: AttendeeSerializer.new(attendee), status: :created
     else
@@ -10,11 +10,10 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def destroy
-    attendee = Attendee.find(params[:id])
-    # require 'pry'; binding.pry
+    attendee = Attendee.find_by(user_id: params[:id])
     if attendee
       attendee.destroy
-      render json: { message: 'Attendee removed successfully' }, status: :no_content
+      render json: { message: 'Attendee removed successfully' }, status: :ok
     else
       render json: { errors: 'Attendee not found' }, status: :not_found
     end

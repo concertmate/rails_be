@@ -16,7 +16,6 @@ RSpec.describe TicketMasterService do
       events = TicketMasterService.get_events(artist)
 
       expect(events).to be_a(Hash)
-
     end
   end
 end

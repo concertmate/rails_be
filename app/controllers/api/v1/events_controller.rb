@@ -3,40 +3,14 @@ class Api::V1::EventsController < ApplicationController
   # THAT WILL HAPPEN IN USER_EVENTS CONTROLLER
   # WE JUST NEED INDEX ACTION TO SHOW ALL EVENTS EVENT.ALL
   # AND SHOW ACTION TO SHOW A SINGLE EVENT EVENT.FIND(BY ID)
-  def create
-    event = Event.new(event_params)
-
-    if event.save 
-      render json: EventSerializer.new(event), status: :created
-    else 
-      render json: { errors: event.errors }, status: :unprocessable_entity
-    end
-  end
-
-
-  def destroy 
-    event = Event.find(params[:id])
-    event.destroy
-  end
 
   def index
-    begin
-      if params[:user_id]
-        user = User.find(params[:user_id])
-        events = user.events
-        render json: EventSerializer.new(events)
-      else
-        events = Event.all
-        render json: EventSerializer.new(events)
-      end
-    rescue ActiveRecord::RecordNotFound => e
-      render json: ErrorSerializer.new(e).serialize_json, status: :not_found
-    end
+    events = Event.all
+    render json: EventSerializer.new(events)
   end
 
-  private 
-
-  def event_params
-    params.permit(:venue_name, :event_name, :date_time, :artist, :location)
+  def show
+    event = Event.find(params[:id])
+    render json: EventSerializer.new(event)
   end
 end

@@ -26,6 +26,18 @@ class Api::V1::UserEventsController < ApplicationController
     render json: EventSerializer.new(event), status: :ok
   end
 
+    def destroy
+      user = User.find(params[:user_id])
+      event = user.events.find(params[:id])
+      if event.destroy
+        render json: { message: "Event deleted successfully" }, status: :ok
+      else
+        render json: { errors: event.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
   private
-  params.require(:event).permit(:venue_name, :event_name, :date_time, :artist, :location, :user_id)
+  def event_params
+    params.require(:event).permit(:venue_name, :event_name, :date_time, :artist, :location, :user_id)
+  end
 end

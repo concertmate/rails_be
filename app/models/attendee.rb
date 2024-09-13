@@ -1,5 +1,3 @@
-require "rails_helper"
-
 class Attendee < ApplicationRecord
   belongs_to :user
   belongs_to :event

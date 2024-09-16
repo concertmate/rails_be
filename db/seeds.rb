@@ -7,7 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Event.destroy_all
+Attendee.destroy_all
+UserArtist.destroy_all
 User.destroy_all
+Artist.destroy_all
+
 
 User.create!(name: 'peterkim_pk1',
             email: 'peterkim.pk1@gmail.com')

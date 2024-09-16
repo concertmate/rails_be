@@ -44,6 +44,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem 'bundler-audit'
   gem 'brakeman'
+  gem 'dotenv-rails'
   gem "rspec"
   gem "shoulda-matchers", "~> 5.0"
   gem 'rswag'

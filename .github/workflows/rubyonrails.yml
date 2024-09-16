@@ -86,10 +86,10 @@ jobs:
           POSTGRES_USER: rails
           POSTGRES_PASSWORD: password
 
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
-      TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       - name: Checkout code
@@ -103,11 +103,11 @@ jobs:
       - name: Set up database
         run: bin/rails db:create db:schema:load
 
-      - name: Set up Rails credentials
-        run: |
-          mkdir -p ~/.rails
-          echo "${{ secrets.RAILS_CREDENTIALS_CONTENT }}" > ~/.rails/credentials.yml.enc
-          echo "${{ secrets.RAILS_MASTER_KEY }}" > ~/.rails/master.key
+      # - name: Set up Rails credentials
+      #   run: |
+      #     mkdir -p ~/.rails
+      #     echo "${{ secrets.RAILS_CREDENTIALS_CONTENT }}" > ~/.rails/credentials.yml.enc
+      #     echo "${{ secrets.RAILS_MASTER_KEY }}" > ~/.rails/master.key
 
       - name: Run tests
         run: bundle exec rspec

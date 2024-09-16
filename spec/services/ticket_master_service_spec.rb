@@ -7,8 +7,8 @@ RSpec.describe TicketMasterService do
       base_url = "https://app.ticketmaster.com/discovery/v2/events.json"
 
       json_response_drake = File.read("spec/fixtures/drake_events.json")
-      api_key = Rails.application.credentials.ticket_master[:api_key]
-      # api_key = ENV['TICKETMASTER_API_KEY']
+      # api_key = Rails.application.credentials.ticket_master[:api_key]
+      api_key = ENV['TICKETMASTER_API_KEY']
       artist = "Drake"
 
       stub_request(:get, "#{base_url}?keyword=#{artist}&apikey=#{api_key}")

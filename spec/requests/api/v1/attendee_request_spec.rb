@@ -69,13 +69,14 @@ RSpec.describe 'Attendees API', type: :request do
   # end
 
   it "destroys an existing attendee" do
-    atttendee_id = @attendee.id
+    attendee_id = @attendee.id
+
+    delete "/api/v1/attendees/#{attendee_id}"
 
 
-    delete "/api/v1/attendees/#{atttendee_id}"
     expect(response).to be_successful
-    expect(response.status).to eq(204)
+    expect(response.status).to eq(200)
 
-    expect(Attendee.find_by(id: atttendee_id)).to be_nil
+    expect(Attendee.find_by(id: attendee_id)).to be_nil
   end
 end

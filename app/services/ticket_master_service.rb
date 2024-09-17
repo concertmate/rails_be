@@ -7,7 +7,7 @@ class TicketMasterService
   end
 
   def self.get_events(keyword)
-    api_key = Rails.application.credentials.ticket_master[:api_key]
+    api_key = ENV['TICKETMASTER_API_KEY']
 
     response = conn.get("events.json?keyword=#{keyword}&apikey=#{api_key}")
 

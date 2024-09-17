@@ -35,4 +35,3 @@ User.create!(name: 'GBowman1',
             email: 'garrettbowman248@gmail.com')
 
 
-

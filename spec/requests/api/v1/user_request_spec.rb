@@ -72,4 +72,24 @@ RSpec.describe 'User API', type: :request do
 
     expect(User.find_by(id: user_id)).to be_nil
   end
+
+  it "sends all users" do
+    get "/api/v1/users"
+
+    users = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+
+    expect(users).to be_a(Hash)
+    expect(users).to have_key(:data)
+
+    expect(users[:data].count).to eq(2)
+
+    expect(users[:data].first[:attributes][:name]).to eq(@user1.name)
+    expect(users[:data].first[:attributes][:email]).to eq(@user1.email)
+
+    expect(users[:data].last[:attributes][:name]).to eq(@user2.name)
+    expect(users[:data].last[:attributes][:email]).to eq(@user2.email)
+  end
 end

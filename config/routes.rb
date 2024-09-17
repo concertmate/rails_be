@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
       resources :events, only: [:show, :index] # this will be all events in db no matter the user
-      resources :users, only: [:show, :create, :update, :destroy] do
+      resources :users, only: [:show, :create, :update, :destroy, :index] do
         resources :user_events, only: [:create, :show, :index, :destroy] #user_events controller to pull events for a user (and create and delete)
       end
       resources :artists, only: [:index, :create, :destroy]

@@ -23,6 +23,7 @@ jobs:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
 
     steps:
       - name: Checkout code

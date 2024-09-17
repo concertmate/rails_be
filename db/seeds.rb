@@ -13,7 +13,6 @@ UserArtist.destroy_all
 User.destroy_all
 Artist.destroy_all
 
-
 User.create!(name: 'peterkim_pk1',
             email: 'peterkim.pk1@gmail.com')
 

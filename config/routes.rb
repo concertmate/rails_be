@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       end
       resources :artists, only: [:index, :create, :destroy]
       resources :attendees, only: [:index, :create, :destroy]
+      get '/concerts', to: 'concert#show' # this will be the top concert for a given artist
     end
   end
 end

@@ -31,10 +31,10 @@ RSpec.describe 'Attendees API', type: :request do
   it "creates a new attendee" do
     user_id = @user2.id
     event_id = @event1.id
-    host = false
+    # host = false
 
     post "/api/v1/attendees", params: { attendee: { user_id: user_id, event_id: event_id } }
-# require 'pry'; binding.pry
+    # require 'pry'; binding.pry
     attendee = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
@@ -48,6 +48,27 @@ RSpec.describe 'Attendees API', type: :request do
     expect(attendee[:data][:attributes][:event_id]).to eq(event_id)
 
   end  
+
+  it 'cant create attendee' do 
+    user_id = User.create(name: 'John Doe', email: '')
+    event_id = @event1.id
+    # host = false
+
+    post "/api/v1/attendees", params: { attendee: { user_id: user_id, event_id: event_id } }
+    # require 'pry'; binding.pry
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(422)
+    attendee = JSON.parse(response.body, symbolize_names: true)
+
+    expect(attendee).to be_a(Hash)
+    # require 'pry'; binding.pry
+    expect(attendee).to have_key(:errors)
+
+    expect(attendee[:errors]).to be_a(Array)
+    expect(attendee[:errors].first).to be_a(String)
+    expect(attendee[:errors].first).to eq("User must exist")
+  end
 
   # it "updates an existing attendee" do
   #   atttendee_id = @attendee.id
@@ -79,4 +100,6 @@ RSpec.describe 'Attendees API', type: :request do
 
     expect(Attendee.find_by(id: attendee_id)).to be_nil
   end
+
+  
 end

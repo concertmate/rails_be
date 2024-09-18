@@ -41,7 +41,10 @@
 	•	DELETE /api/v1/attendees/:id - Remove a user from an event's attendees
 	•	GET /api/v1/events/:event_id/attendees - Get a list of all attendees for a specific event
 
-
+	
+  ### Concerts
+	•	GET /api/v1/concerts - Gets the top concert for the artist chosen
+	
 
  ### Example Requests
     Deployed URL: https://concertmate-rails-9f7aa871924c.herokuapp.com/

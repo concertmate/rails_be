@@ -101,5 +101,19 @@ RSpec.describe 'Attendees API', type: :request do
     expect(Attendee.find_by(id: attendee_id)).to be_nil
   end
 
-  
+  it 'cant destory a attendee there is no attendee there' do 
+    attendee_id = '12345678765432345676543456754'
+
+    delete "/api/v1/attendees/#{attendee_id}"
+
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+    # require 'pry'; binding.pry
+    attendee = JSON.parse(response.body, symbolize_names: true)
+
+    expect(attendee).to have_key(:errors)
+    expect(attendee[:errors]).to be_a(String)
+    expect(attendee[:errors]).to eq("Attendee not found")
+  end
 end

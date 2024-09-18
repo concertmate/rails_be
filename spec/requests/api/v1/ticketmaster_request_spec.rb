@@ -25,4 +25,19 @@ RSpec.describe "Api::V1::Ticketmasters", type: :request do
       expect(ticket_m_details[:data][:attributes][:concert_date]).to eq("2024-10-01")
     end
   end
+
+  it 'returns an error if there is no concerts for that person' do 
+    get '/api/v1/concerts', params: { artist: 'ArtistThatDoesntExist' }
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+
+    error = JSON.parse(response.body, symbolize_names: true)
+
+    # require 'pry'; binding.pry
+    expect(error).to have_key(:error)
+    expect(error[:error]).to be_a(String)
+    expect(error[:error]).to eq('No concerts found')
+  end
+
 end

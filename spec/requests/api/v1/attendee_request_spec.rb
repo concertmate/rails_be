@@ -116,4 +116,40 @@ RSpec.describe 'Attendees API', type: :request do
     expect(attendee[:errors]).to be_a(String)
     expect(attendee[:errors]).to eq("Attendee not found")
   end
+
+  
+  describe 'index' do 
+  
+    it 'returns attendees' do 
+      get '/api/v1/attendees'
+
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      attendees = JSON.parse(response.body, symbolize_names: true)
+      expect(attendees).to have_key(:data)
+      expect(attendees).to be_a(Hash)
+      expect(attendees.count).to eq(1)
+      expect(attendees).to have_key(:data)
+
+      expect(attendees[:data]).to be_a(Array)
+      expect(attendees[:data].first).to have_key(:id)
+      expect(attendees[:data].first[:id]).to be_a(String)
+      expect(attendees[:data].first[:id]).to eq("#{attendees[:data].first[:id]}")
+
+      expect(attendees[:data].first).to have_key(:type)
+      expect(attendees[:data].first[:type]).to be_a(String)
+      expect(attendees[:data].first[:type]).to eq("attendee")
+
+      expect(attendees[:data].first).to have_key(:attributes)
+      expect(attendees[:data].first[:attributes]).to be_a(Hash)
+
+      # require 'pry'; binding.pry
+      expect(attendees[:data].first[:attributes][:user_id]).to be_a(Integer)
+      expect(attendees[:data].first[:attributes][:user_id]).to eq(attendees[:data].first[:attributes][:user_id])
+
+      expect(attendees[:data].first[:attributes][:event_id]).to be_a(Integer)
+      expect(attendees[:data].first[:attributes][:event_id]).to eq(attendees[:data].first[:attributes][:event_id])
+    end
+  end
 end

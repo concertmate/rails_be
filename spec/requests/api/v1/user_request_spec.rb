@@ -44,6 +44,27 @@ RSpec.describe 'User API', type: :request do
     expect(user[:data][:attributes][:email]).to eq(user_params[:email])
   end
 
+  it 'cant create a user' do 
+    user_params = {
+      name: '',
+      email: 'new_user@email.com'
+    }
+
+    post "/api/v1/users", params: { user: user_params }
+
+    user = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(422)
+
+    expect(user).to be_a(Hash)
+    expect(user).to have_key(:errors)
+    expect(user[:errors]).to be_a(Array)
+
+    expect(user[:errors].first).to be_a(String)
+    expect(user[:errors].first).to eq("Name can't be blank")
+  end
+
   it "updates an existing user" do
     user_id = @user1.id
     updated_name = 'Updated Name'
@@ -92,4 +113,6 @@ RSpec.describe 'User API', type: :request do
     expect(users[:data].last[:attributes][:name]).to eq(@user2.name)
     expect(users[:data].last[:attributes][:email]).to eq(@user2.email)
   end
+
+
 end

@@ -83,6 +83,27 @@ RSpec.describe 'User API', type: :request do
     expect(user[:data][:attributes][:email]).to eq(@user1.email)
   end
 
+  it 'cant update a user with invalid email' do
+    user = User.create(name: "Valid Name", email: "valid@email.com")
+    user_id = user.id
+    put "/api/v1/users/#{user_id}", params: { user: { email: "invalid-email" } }
+ 
+ 
+    expect(response).to_not be_successful
+    expect(response.status).to eq(422)
+ 
+ 
+    user = JSON.parse(response.body, symbolize_names: true)
+ 
+ 
+    expect(user).to be_a(Hash)
+    expect(user).to have_key(:errors)
+ 
+ 
+    expect(user[:errors].first).to be_a(String)
+    expect(user[:errors].first).to eq("Email is invalid")
+  end
+
   it "destroys an existing user" do
     user_id = @user1.id
 

@@ -18,7 +18,9 @@ RSpec.describe "Api::V1::Artists", type: :request do
 
         get "/api/v1/artists", params: { name: "Green" }
 
-        expect(response).to have_http_status(200)
+        expect(response.status).to eq(200)
+        expect(response).to be_successful
+
         data = JSON.parse(response.body, symbolize_names: true)
 
         expect(data).to be_a(Hash)
@@ -35,7 +37,6 @@ RSpec.describe "Api::V1::Artists", type: :request do
 
         expect(data[:data].first[:attributes]).to have_key(:musicbrainz_id)
         expect(data[:data].first[:attributes][:musicbrainz_id]).to eq(nil)
-
       end
     end
 
@@ -54,7 +55,6 @@ RSpec.describe "Api::V1::Artists", type: :request do
   end
 
   describe "POST /api/v1/artists" do
-
     let(:user) { create(:user) }
     let(:artist_params) { { artist: { name: "Green Day", musicbrainz_id: "id" }, user_id: user.id } }
 
@@ -77,8 +77,11 @@ RSpec.describe "Api::V1::Artists", type: :request do
     it "returns an error if required parameters are missing" do
       post "/api/v1/artists", params: { artist: { name: nil, musicbrainz_id: nil }, user_id: user.id }
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+
       data = JSON.parse(response.body, symbolize_names: true)[:errors]
+
       expect(data).to be_an(Array)
 
       expect(data.first[:detail]).to be_a(String)
@@ -88,8 +91,11 @@ RSpec.describe "Api::V1::Artists", type: :request do
     it "returns an error if the user does not exist" do
       post "/api/v1/artists", params: { artist: { name: "Green Day", musicbrainz_id: "id" }, user_id: -1 }
 
-      expect(response).to have_http_status(:not_found)
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
       data = JSON.parse(response.body, symbolize_names: true)[:errors]
+
       expect(data).to be_an(Array)
       expect(data.first[:detail]).to be_a(String)
       expect(data.first[:detail]).to eq("Couldn't find User with 'id'=-1")
@@ -99,12 +105,14 @@ RSpec.describe "Api::V1::Artists", type: :request do
   describe "DELETE /api/v1/artists/:id" do
     let(:user) { create(:user) }
     let(:artist) { create(:artist) }
-    let!(:user_artist) { create(:user_artist, user: user, artist: artist) }  # Create the association
+    let!(:user_artist) { create(:user_artist, user: user, artist: artist) }  
 
     it "deletes an artist from a user's saved artists" do
       delete "/api/v1/artists/#{artist.id}", params: { user_id: user.id }
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
       data = JSON.parse(response.body, symbolize_names: true)
 
       expect(data[:message]).to be_a(String)
@@ -125,7 +133,7 @@ RSpec.describe "Api::V1::Artists", type: :request do
 
   it 'parse error' do 
     allow(ArtistFacade).to receive(:search_artists).and_raise(JSON::ParserError.new('unexpected token'))
-    #^ this is basically mocking the search artist from the facade  and then we raise the JSON::ParserError then just simulate where the json response fails at.
+    
     get "/api/v1/artists", params: { name: 'invalid_artist' }
 
     expect(response).to_not be_successful 
@@ -144,8 +152,8 @@ RSpec.describe "Api::V1::Artists", type: :request do
     get "/api/v1/artists", params: { name: 'artist_with_error' }
   
     expect(response).to_not be_successful
-    # require 'pry'; binding.pry
     expect(response.status).to eq(500)
+
     data = JSON.parse(response.body, symbolize_names: true)
   
     expect(data[:errors]).to be_an(Array)

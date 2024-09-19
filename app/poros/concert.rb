@@ -2,7 +2,7 @@ class Concert
   attr_reader :concert_name, :concert_date, :concert_time, :concert_venue, :concert_country, :id
 
   def initialize(data)
-    @id = SecureRandom.uuid # json serializer needed an id
+    @id = SecureRandom.uuid 
     @concert_name = data[:name]
     @concert_date = data[:dates][:start][:localDate]
     @concert_time = data[:dates][:start][:localTime]

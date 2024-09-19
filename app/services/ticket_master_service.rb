@@ -1,8 +1,6 @@
 class TicketMasterService
-
   def self.conn 
     Faraday.new(url: "https://app.ticketmaster.com/discovery/v2/") do |faraday|
-
     end
   end
 

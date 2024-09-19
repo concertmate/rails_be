@@ -1,7 +1,6 @@
-  require 'rails_helper'
+require 'rails_helper'
 
 RSpec.describe 'User API', type: :request do
-
   before :each do 
     @user1 = User.create(name: 'John Doe', email: 'john@email.com')
     @user2 = User.create(name: 'Jane Doe', email: 'jane@email.com')
@@ -71,7 +70,6 @@ RSpec.describe 'User API', type: :request do
 
     put "/api/v1/users/#{user_id}", params: { user: { name: updated_name } }
 
-
     user = JSON.parse(response.body, symbolize_names: true)
     expect(response).to be_successful
     expect(response.status).to eq(200)
@@ -88,17 +86,13 @@ RSpec.describe 'User API', type: :request do
     user_id = user.id
     put "/api/v1/users/#{user_id}", params: { user: { email: "invalid-email" } }
  
- 
     expect(response).to_not be_successful
     expect(response.status).to eq(422)
  
- 
     user = JSON.parse(response.body, symbolize_names: true)
- 
  
     expect(user).to be_a(Hash)
     expect(user).to have_key(:errors)
- 
  
     expect(user[:errors].first).to be_a(String)
     expect(user[:errors].first).to eq("Email is invalid")
@@ -121,10 +115,10 @@ RSpec.describe 'User API', type: :request do
 
     expect(response).to_not be_successful
     expect(response.status).to eq(404)
-    # require 'pry'; binding.pry
+    
     user = JSON.parse(response.body, symbolize_names: true)
+
     expect(user).to be_a(Hash)
-    # require 'pry'; binding.pry
     expect(user[:errors]).to be_a(String)
     expect(user[:errors]).to eq("User not found")
   end
@@ -148,6 +142,4 @@ RSpec.describe 'User API', type: :request do
     expect(users[:data].last[:attributes][:name]).to eq(@user2.name)
     expect(users[:data].last[:attributes][:email]).to eq(@user2.email)
   end
-
-
 end

@@ -19,12 +19,12 @@ class Api::V1::AttendeesController < ApplicationController
       render json: { errors: 'Attendee not found' }, status: :not_found
     end
   end
-
+  
   def index
     attendees = Attendee.where(event_id: params[:event_id])
     render json: AttendeeSerializer.new(attendees), status: :ok
   end
-  ##### NEED TO SQUARE AWAY JSON RENDERING WITH SERIALIZERS FOR ALL ACTIONS #####
+
   private
 
   def attendee_params

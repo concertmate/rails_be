@@ -18,7 +18,6 @@ RSpec.describe "Api::V1::Ticketmasters", type: :request do
 
       ticket_m_details = JSON.parse(response.body, symbolize_names: true)
       
-      # require 'pry'; binding.pry 
       expect(response).to be_successful
       expect(ticket_m_details).to be_a(Hash)
       expect(ticket_m_details[:data][:attributes][:concert_name]).to eq("DRAKE")
@@ -34,10 +33,8 @@ RSpec.describe "Api::V1::Ticketmasters", type: :request do
 
     error = JSON.parse(response.body, symbolize_names: true)
 
-    # require 'pry'; binding.pry
     expect(error).to have_key(:error)
     expect(error[:error]).to be_a(String)
     expect(error[:error]).to eq('No concerts found')
   end
-
 end

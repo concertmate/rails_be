@@ -6,5 +6,4 @@ class Event < ApplicationRecord
   validates :date_time, presence: true
   validates :artist, presence: true
   validates :location, presence: true
-
 end

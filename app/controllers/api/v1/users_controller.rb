@@ -20,12 +20,13 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy
-    user = User.find(params[:id])
+    user = User.find_by(id: params[:id])
 
-    if user.destroy
+    if user
+      user.destroy
       render json: { message: "User has been deleted" }, status: :no_content
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: 'User not found' }, status: :not_found
     end
   end
 

@@ -94,6 +94,20 @@ RSpec.describe 'User API', type: :request do
     expect(User.find_by(id: user_id)).to be_nil
   end
 
+  it 'cant destroy a user that doesnt exist' do 
+
+    delete "/api/v1/users/12345432"
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+    # require 'pry'; binding.pry
+    user = JSON.parse(response.body, symbolize_names: true)
+    expect(user).to be_a(Hash)
+    # require 'pry'; binding.pry
+    expect(user[:errors]).to be_a(String)
+    expect(user[:errors]).to eq("User not found")
+  end
+
   it "sends all users" do
     get "/api/v1/users"
 

@@ -25,8 +25,20 @@ RSpec.describe "Api::V1::Artists", type: :request do
         expect(data).to have_key(:data)
         expect(data[:data]).to be_an(Array)
         expect(data[:data].count).to eq(10)
+
+        expect(data[:data].first).to have_key(:type)
+        expect(data[:data].first).to have_key(:attributes)
+
+        expect(data[:data].first[:attributes]).to have_key(:name)
+        expect(data[:data].first[:attributes][:name]).to be_a(String)
+        expect(data[:data].first[:attributes][:name]).to eq("Green Day")
+
+        expect(data[:data].first[:attributes]).to have_key(:musicbrainz_id)
+        expect(data[:data].first[:attributes][:musicbrainz_id]).to eq(nil)
+
       end
     end
+
     it "returns an error if no search name is passed" do
       VCR.turned_off do
         get "/api/v1/artists"
@@ -34,6 +46,8 @@ RSpec.describe "Api::V1::Artists", type: :request do
         expect(response).to have_http_status(:bad_request)
         data = JSON.parse(response.body, symbolize_names: true)[:errors]
         expect(data).to be_an(Array)
+        expect(data.first).to have_key(:detail)
+        expect(data.first[:detail]).to be_a(String)
         expect(data.first[:detail]).to eq("Name parameter is required")
       end
     end
@@ -49,11 +63,14 @@ RSpec.describe "Api::V1::Artists", type: :request do
 
       expect(response).to have_http_status(:ok)
       data = JSON.parse(response.body, symbolize_names: true)
-
       expect(data).to be_an(Hash)
+
       expect(data).to have_key(:name)
+      expect(data[:name]).to be_a(String)
       expect(data[:name]).to eq("Green Day")
+
       expect(data).to have_key(:musicbrainz_id)
+      expect(data[:musicbrainz_id]).to be_a(String)
       expect(data[:musicbrainz_id]).to eq("id")
     end
 
@@ -63,6 +80,8 @@ RSpec.describe "Api::V1::Artists", type: :request do
       expect(response).to have_http_status(:bad_request)
       data = JSON.parse(response.body, symbolize_names: true)[:errors]
       expect(data).to be_an(Array)
+
+      expect(data.first[:detail]).to be_a(String)
       expect(data.first[:detail]).to eq("Validation failed: Name can't be blank, Musicbrainz can't be blank")
     end
 
@@ -72,6 +91,7 @@ RSpec.describe "Api::V1::Artists", type: :request do
       expect(response).to have_http_status(:not_found)
       data = JSON.parse(response.body, symbolize_names: true)[:errors]
       expect(data).to be_an(Array)
+      expect(data.first[:detail]).to be_a(String)
       expect(data.first[:detail]).to eq("Couldn't find User with 'id'=-1")
     end
   end
@@ -87,6 +107,7 @@ RSpec.describe "Api::V1::Artists", type: :request do
       expect(response).to have_http_status(:ok)
       data = JSON.parse(response.body, symbolize_names: true)
 
+      expect(data[:message]).to be_a(String)
       expect(data[:message]).to eq("Artist removed from user's saved artists")
     end
 
@@ -97,7 +118,39 @@ RSpec.describe "Api::V1::Artists", type: :request do
       data = JSON.parse(response.body, symbolize_names: true)
 
       expect(data[:errors]).to be_an(Array)
+      expect(data[:errors].first[:detail]).to be_a(String)
       expect(data[:errors].first[:detail]).to eq("Couldn't find UserArtist with [WHERE \"user_artists\".\"user_id\" = $1 AND \"user_artists\".\"artist_id\" = $2]")
     end
+  end
+
+  it 'parse error' do 
+    allow(ArtistFacade).to receive(:search_artists).and_raise(JSON::ParserError.new('unexpected token'))
+    #^ this is basically mocking the search artist from the facade  and then we raise the JSON::ParserError then just simulate where the json response fails at.
+    get "/api/v1/artists", params: { name: 'invalid_artist' }
+
+    expect(response).to_not be_successful 
+    expect(response.status).to eq(500) 
+
+    data = JSON.parse(response.body, symbolize_names: true)
+
+    expect(data[:errors]).to be_an(Array)
+    expect(data[:errors].first[:detail]).to be_a(String)
+    expect(data[:errors].first[:detail]).to eq("Failed to parse response: unexpected token")
+  end
+
+  it 'standard error' do 
+    allow(ArtistFacade).to receive(:search_artists).and_raise(StandardError.new('something went wrong'))
+
+    get "/api/v1/artists", params: { name: 'artist_with_error' }
+  
+    expect(response).to_not be_successful
+    # require 'pry'; binding.pry
+    expect(response.status).to eq(500)
+    data = JSON.parse(response.body, symbolize_names: true)
+  
+    expect(data[:errors]).to be_an(Array)
+    expect(data[:errors].first).to have_key(:detail)
+    expect(data[:errors].first[:detail]).to be_a(String)
+    expect(data[:errors].first[:detail]).to eq('something went wrong')
   end
 end

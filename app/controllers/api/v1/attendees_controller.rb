@@ -21,7 +21,7 @@ class Api::V1::AttendeesController < ApplicationController
   end
 
   def index
-    attendees = Attendee.all
+    attendees = Attendee.where(event_id: params[:event_id])
     render json: AttendeeSerializer.new(attendees), status: :ok
   end
   ##### NEED TO SQUARE AWAY JSON RENDERING WITH SERIALIZERS FOR ALL ACTIONS #####

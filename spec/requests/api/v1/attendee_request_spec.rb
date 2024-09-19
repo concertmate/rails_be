@@ -121,12 +121,13 @@ RSpec.describe 'Attendees API', type: :request do
   describe 'index' do 
   
     it 'returns attendees' do 
-      get '/api/v1/attendees'
+      get "/api/v1/attendees?event_id=#{@event1.id}"
 
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
       attendees = JSON.parse(response.body, symbolize_names: true)
+      # require 'pry'; binding.pry
       expect(attendees).to have_key(:data)
       expect(attendees).to be_a(Hash)
       expect(attendees.count).to eq(1)
